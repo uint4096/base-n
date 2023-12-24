@@ -1,22 +1,11 @@
-const chunkArray = <T>(arr: Array<T>, size: number) =>
-  arr.reduce<Array<Array<T>>>((chunkedArr, elem) => {
-    const currentChunk: Array<T> | undefined = chunkedArr.at(-1);
-    if (currentChunk && currentChunk.length < size) {
-      currentChunk.push(elem);
-    } else {
-      chunkedArr.push([elem]);
-    }
-
-    return chunkedArr;
-  }, []);
-
-const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567".split("");
+import { BASE32_CHARS, chunkArray } from "../utils";
 
 export const toBase32 = (str: string) => {
   const byteChunks = chunkArray(
     str.split("").map((c) => c.charCodeAt(0)),
     5
   );
+
   const res = [];
   for (const bytes of byteChunks) {
     const bitConcat = bytes.reduce(
@@ -31,8 +20,8 @@ export const toBase32 = (str: string) => {
     const bitmask = BigInt(0b11111);
     const convertedByte = [];
     while (buf > 0) {
-      // Safe because the number will always have <5 bits
-      convertedByte.push(chars[Number(buf & bitmask)]);
+      // Safe because `buf & bitmask` will always have <5 bits
+      convertedByte.push(BASE32_CHARS[Number(buf & bitmask)]);
       buf = buf >> BigInt(5);
     }
 

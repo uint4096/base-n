@@ -1,0 +1,2 @@
+export const BASE32_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567".split("");
+export const OCTAL_HEX_CHARS = "0123456789ABCDEF".split("");

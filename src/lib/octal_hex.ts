@@ -1,11 +1,11 @@
-const digits = "0123456789ABCDEF".split("");
+import { OCTAL_HEX_CHARS } from "../utils/digits_map";
 
 const toBaseN = (num: number, n: 8 | 16) => {
   const bitmask = n - 1; // 0b111 or 0b1111
   const result = [];
   while (num > 0) {
     const bitset = num & bitmask;
-    result.push(digits[bitset]);
+    result.push(OCTAL_HEX_CHARS[bitset]);
     num = num >> Math.log2(n);
   }
 
