@@ -1,4 +1,4 @@
-import { OCTAL_HEX_CHARS } from "../utils/digits_map";
+import { OCTAL_HEX_CHARS } from "../utils/index.js";
 
 const toBaseN = (num: number, n: 8 | 16) => {
   const bitmask = n - 1; // 0b111 or 0b1111

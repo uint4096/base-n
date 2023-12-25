@@ -1,2 +1,2 @@
-export * from './digits_map';
-export * from './chunk_array';
+export * from "./chunk_array.js";
+export * from "./digits_map.js";

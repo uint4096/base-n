@@ -1,4 +1,4 @@
-import { BASE32_CHARS, chunkArray } from "../utils";
+import { BASE32_CHARS, chunkArray } from "../utils/index.js";
 
 export const toBase32 = (str: string) => {
   const byteChunks = chunkArray(
@@ -6,8 +6,7 @@ export const toBase32 = (str: string) => {
     5
   );
 
-  const res = [];
-  for (const bytes of byteChunks) {
+  return byteChunks.map(bytes => {
     const bitConcat = bytes.reduce(
       (buf, byte) => (buf << BigInt(8)) | BigInt(byte),
       BigInt(0)
@@ -15,14 +14,15 @@ export const toBase32 = (str: string) => {
 
     // Pad bits with 0s to make the number of bits divisible by 5
     const bitPadding = bytes.length < 5 ? 5 - ((8 * bytes.length) % 5) : 0;
-
     let buf = bitConcat << BigInt(bitPadding);
+
     const bitmask = BigInt(0b11111);
     const convertedByte = [];
+
     while (buf > 0) {
       // Safe because `buf & bitmask` will always have <5 bits
       convertedByte.push(BASE32_CHARS[Number(buf & bitmask)]);
-      buf = buf >> BigInt(5);
+      buf >>= BigInt(5);
     }
 
     const charPadding = Array.from(
@@ -30,8 +30,8 @@ export const toBase32 = (str: string) => {
       () => "="
     ).join("");
 
-    res.push(...convertedByte.reverse(), ...charPadding);
-  }
-
-  return res.join("");
+    return [...convertedByte.reverse(), ...charPadding];
+  })
+  .flat()
+  .join("");
 };
